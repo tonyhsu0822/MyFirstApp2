@@ -7,27 +7,31 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.support.v4.app.Fragment ;
 import android.support.v4.app.FragmentActivity ;
 import android.view.LayoutInflater;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import java.util.Vector;
 
 public class MyActivity extends ActionBarActivity {
-
-
-
-    public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE" ;
-    //public String[] data = new String [10] ;
     public static int times = 0 ;
-    public static String[] message = new String[100] ;
+    public static String[] message = new String[100];
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+
+        for(int i = 0; i < 100; i++){
+            message[i] = "";
+        }
+        ListView listView = (ListView)findViewById(R.id.inputRecord);
+        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,android.R.id.text1, message));
     }
 
 
@@ -56,7 +60,6 @@ public class MyActivity extends ActionBarActivity {
     /**Called when the user click the Send button*/
     public void sendMessage(View view){
 
-
         //do something in response to button
         Intent intent = new Intent(this, DisplayMessageActivity.class) ;
         EditText editText = (EditText)findViewById(R.id.edit_message) ;
@@ -65,6 +68,9 @@ public class MyActivity extends ActionBarActivity {
         times ++ ;
 
         editText.getText().clear();
+
+        ListView listView = (ListView)findViewById(R.id.inputRecord);
+        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,android.R.id.text1, message));
        // intent.putExtra(EXTRA_MESSAGE,message) ;
         //startActivity(intent);
        // finish();

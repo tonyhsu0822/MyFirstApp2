@@ -24,10 +24,6 @@ public class DisplayMessageActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Get the message from the intent
-        Intent intent = getIntent() ;
-        String message = intent.getStringExtra(MyActivity.EXTRA_MESSAGE) ;
-
         XYMultipleSeriesDataset mDataset = new XYMultipleSeriesDataset() ;
         XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer();
 
@@ -36,19 +32,16 @@ public class DisplayMessageActivity extends ActionBarActivity {
 
         XYSeries series = new XYSeries("Number Data");
 
-
        setContentView(R.layout.activity_display_message);
-       // TextView textView = (TextView)findViewById(R.id.number_text_view) ;
-        //textView.setText(MyActivity.message[0]);
-        double min = -100;
-        double max = 100;
+        //double min = -100;
+        //double max = 100;
         int times = MyActivity.times - 1 ;
         for(int i =0;i<=times;i++){
             xvalue[i] = i ;
             yvalue[i] = Double.parseDouble(MyActivity.message[i]) ;
             series.add(xvalue[i],yvalue[i]);
         }
-
+/*
         for(int i = 0; i <= times; i++){
             if(yvalue[i] < min){
                 min = yvalue[i];
@@ -57,32 +50,27 @@ public class DisplayMessageActivity extends ActionBarActivity {
                 max = yvalue[i];
             }
         }
-
+*/
         XYSeriesRenderer renderer = new XYSeriesRenderer();
 
-        renderer.setFillPoints(true);
-        renderer.setDisplayChartValues(true);
-        renderer.setChartValuesTextSize(30);
-        renderer.setPointStyle(PointStyle.CIRCLE);
-
+        setRendererSetting(renderer);
         mDataset.addSeries(series);
         mRenderer.addSeriesRenderer(renderer);
-        setChartSetting(mRenderer, "Body Temperature", "Time", "temperature", -0.5, (double)times+0.5, min-5, max+5);
+        setChartSetting(mRenderer, "Body Temperature", "Time", "Temperature", -0.5, (double)times+0.5, 35, 40);
 
-        mRenderer.setYAxisMax(40);
-        mRenderer.setYAxisMin(35);
-        mRenderer.setBackgroundColor(Color.WHITE);
-        mRenderer.setDisplayValues(true);
-        mRenderer.setShowLegend(true);
         View mChartView = ChartFactory.getLineChartView(this, mDataset, mRenderer);
-
-
 
         LinearLayout layout = (LinearLayout)findViewById(R.id.chart1) ;
         layout.addView(mChartView);
        // setContentView(mChartView);
     }
 
+    protected void setRendererSetting(XYSeriesRenderer renderer){
+        renderer.setFillPoints(true);
+        renderer.setDisplayChartValues(true);
+        renderer.setChartValuesTextSize(30);
+        renderer.setPointStyle(PointStyle.CIRCLE);
+    }
 
     protected void setChartSetting(XYMultipleSeriesRenderer renderer, String title, String xTitle,
                                    String yTitle, double xMin, double xMax, double yMin,double yMax){
@@ -96,6 +84,9 @@ public class DisplayMessageActivity extends ActionBarActivity {
         renderer.setYAxisMin(yMin);
         renderer.setYAxisMax(yMax);
         renderer.setShowGrid(true);
+        renderer.setBackgroundColor(Color.WHITE);
+        renderer.setDisplayValues(true);
+        renderer.setShowLegend(true);
     }
 
 
